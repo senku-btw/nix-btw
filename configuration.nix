@@ -3,8 +3,10 @@
 
 {
   imports = [ 
-    # Explicitly targeting your baseline file
     ./hardware/baseline.nix
+    ./hardware/nvidia-graphics.nix
+    ./services/pipewire.nix
+    ./services/desktop-environment.nix
   ];
 
   networking.hostName = "nix-btw";
