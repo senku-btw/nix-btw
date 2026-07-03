@@ -1,5 +1,5 @@
 # ~/nix-btw/services/desktop-environment.nix
-{ config, pkgs, lib, ... }: # <-- Make sure 'lib' is included here at the very top!
+{ config, pkgs, ... }:
 
 {
   # 1. Enable Niri Wayland Compositor Infrastructure
@@ -17,16 +17,14 @@
   };
 
   # 3. Systemd TTY Override Guard
-  # We use lib.mkForce to elegantly merge our TUI console routing over the defaults
-  systemd.services.greetd.serviceConfig = lib.mkForce {
-    Type = "idle"; # Follows upstream recommended behavior for console managers
-    StandardInput = "tty";
-    StandardOutput = "tty";
-    StandardError = "journal";
-    TTYReset = true;
-    TTYVHangup = true;
-    TTYVTDisallocate = true;
-  };
+  # Injected directly to merge cleanly with the upstream service definitions
+  systemd.services.greetd.serviceConfig.Type = "idle";
+  systemd.services.greetd.serviceConfig.StandardInput = "tty";
+  systemd.services.greetd.serviceConfig.StandardOutput = "tty";
+  systemd.services.greetd.serviceConfig.StandardError = "journal";
+  systemd.services.greetd.serviceConfig.TTYReset = true;
+  systemd.services.greetd.serviceConfig.TTYVHangup = true;
+  systemd.services.greetd.serviceConfig.TTYVTDisallocate = true;
 
   # 4. Golden-Standard Wayland & NVIDIA Optimization Variables
   environment.sessionVariables = {
