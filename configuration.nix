@@ -11,8 +11,6 @@
 
   networking.networkmanager.enable = true;
   networking.useDHCP = lib.mkDefault true;
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   nix.settings.auto-optimise-store = true;
   nix.gc = {
@@ -20,6 +18,12 @@
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
+
+  # Enable Flakes and the new 'nix' CLI
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
+  # Allow proprietary/unfree packages (Required for Nvidia drivers)
+  nixpkgs.config.allowUnfree = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
 
