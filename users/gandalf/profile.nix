@@ -1,12 +1,12 @@
-# ~/nix-btw/users/senku-btw/profile.nix
+# ~/nix-btw/users/gandalf/profile.nix
 { config, pkgs, ... }:
 
 {
   # Structural Hook: Link the user's specific Home Manager profile to this system module
-  home-manager.users.senku-btw = import ./home-manager.nix;
+  home-manager.users.gandalf = import ./home-manager.nix;
 
   # Core system user declaration
-  users.users.senku-btw = {
+  users.users.gandalf = {
     isNormalUser = true;
     description = "Primary Workstation Operator";
     
