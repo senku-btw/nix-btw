@@ -3,7 +3,7 @@
 
 {
   # Define system network identity
-  networking.hostName = "nix";
+  networking.hostName = "nix-btw";
 
   # Enable NetworkManager for simple Wi-Fi and ethernet management
   networking.networkmanager.enable = true;
