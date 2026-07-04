@@ -3,8 +3,8 @@
 
 {
   # Core Home Manager profile identity
-  home.username = "senku-btw";
-  home.homeDirectory = "/home/senku-btw";
+  home.username = "gandalf";
+  home.homeDirectory = "/home/gandalf";
   
   # Tracks the initial installation release state for stateful data compatibility
   home.stateVersion = "24.11"; 
