@@ -10,6 +10,7 @@
     ./services/desktop-environment.nix
     ./services/ssh.nix
     ./packages/system-packages.nix
+    ./users/senku-btw/self.nix
   ];
 
   nix.settings.auto-optimise-store = true;
@@ -26,12 +27,6 @@
   nixpkgs.config.allowUnfree = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
-
-  users.users.senku-btw = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
-    openssh.authorizedKeys.keys = [];
-  };
 
   system.stateVersion = "26.05";
 }
