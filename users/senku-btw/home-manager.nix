@@ -8,10 +8,12 @@
 
   programs.home-manager.enable = true;
 
-  # Install user packages directly via Home Manager
+  # User packages managed via Home Manager
   home.packages = with pkgs; [
     fastfetch
     pavucontrol
+    alacritty
+    fuzzel
   ];
 
   # Create out-of-store developer links directly into your dotfiles tracking folder
