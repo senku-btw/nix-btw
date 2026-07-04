@@ -1,24 +1,25 @@
-# ~/nix-btw/services/niri.nix
+# ~/nix-btw/sessions/niri.nix
 { config, pkgs, ... }:
 
 {
   # Enable Niri Wayland Compositor Infrastructure
   programs.niri.enable = true;
 
-  # Golden-Standard Wayland & NVIDIA Optimization Variables
+  # Global desktop session variables for app rendering stability
   environment.sessionVariables = {
+    # Desktop Environment identification hooks
     XDG_CURRENT_DESKTOP = "niri";
     XDG_SESSION_TYPE = "wayland";
-    WLR_NO_HARDWARE_CURSORS = "1";     
-    GBM_BACKEND = "nvidia-drm";        
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia"; 
-    LIBVA_DRIVER_NAME = "nvidia";      
-    NIXOS_OZONE_HLWM = "1";            
-    MOZ_ENABLE_WAYLAND = "1";          
-    GTK_BACKEND = "wayland";           
-    QT_QPA_PLATFORM = "wayland;xcb";   
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; 
-    SDL_VIDEODRIVER = "wayland";       
-    _JAVA_AWT_WM_NONREPARENTING = "1"; 
+
+    # Toolkit environment force-routing flags for native Wayland execution
+    MOZ_ENABLE_WAYLAND = "1";
+    CLUTTER_BACKEND = "wayland";
+    GDK_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    
+    # Prevents blank grey windows in legacy Java GUI frameworks
+    _JAVA_AWT_WM_NONREPARENTING = "1";
   };
 }
