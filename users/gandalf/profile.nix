@@ -8,7 +8,6 @@
   # Core system user declaration
   users.users.gandalf = {
     isNormalUser = true;
-    description = "Primary Workstation Operator";
     
     # Unified group assignments for modern desktop and hardware acceleration pipelines
     extraGroups = [ 
