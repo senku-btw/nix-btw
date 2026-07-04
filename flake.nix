@@ -14,8 +14,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    # System derivation for target host 'nix'
-    nixosConfigurations."nix" = nixpkgs.lib.nixosSystem {
+    # System derivation for target host 'nix-btw'
+    nixosConfigurations."nix-btw" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
       # Expose flake inputs to downstream modules natively
