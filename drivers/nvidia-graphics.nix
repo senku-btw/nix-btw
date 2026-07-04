@@ -23,7 +23,7 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     
     # Fixes invisible cursor rendering bugs common in wlroots/Niri on older Nvidia cards
-    WLR_NO_HARDWARE_CURSORS = "1";
+    WIR_NO_HARDWARE_CURSORS = "1";
 
     # Hardware acceleration flags for video playback
     LIBVA_DRIVER_NAME = "nvidia";
@@ -36,7 +36,7 @@
       enable = true; 
       enable32Bit = true; 
       extraPackages = with pkgs; [
-        vaapiVdpau
+        libva-vdpau-driver
         libvdpau-va-gl
         nvidia-vaapi-driver
       ];
