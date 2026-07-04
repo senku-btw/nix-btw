@@ -11,7 +11,8 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations."nix-btw" = nixpkgs.lib.nixosSystem {
+    # Changed hostName configuration key from "nix-btw" to "nix"
+    nixosConfigurations."nix" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
@@ -19,8 +20,9 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          # Point this to your new file name right here:
-          home-manager.users.groot = import ./users/groot/home-manager.nix;
+          
+          # Updated user attribute and path from 'groot' to 'senku-btw'
+          home-manager.users.senku-btw = import ./users/senku-btw/home-manager.nix;
         }
       ];
     };
