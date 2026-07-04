@@ -7,7 +7,7 @@
     settings = {
       default_session = {
         # Configured tuigreet to look dynamically inside the system's wayland-sessions folder
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --wsessions /run/current-system/sw/share/wayland-sessions";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions:${config.services.displayManager.sessionData.desktops}/share/xsessions";
         user = "greeter";
       };
     };
