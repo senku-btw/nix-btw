@@ -7,5 +7,6 @@
     wget
     git
     tree
+    xdg-utils
   ];
 }
