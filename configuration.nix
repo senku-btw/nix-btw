@@ -8,7 +8,7 @@
     ./hardware/networking.nix
     ./services/pipewire.nix
     ./services/greetd.nix
-    ./services/niri.nix
+    ./sessions/niri.nix
     ./services/ssh.nix
     ./packages/system-packages.nix
     ./users/senku-btw/profile.nix
