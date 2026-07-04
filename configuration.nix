@@ -10,7 +10,7 @@
     ./services/desktop-environment.nix
     ./services/ssh.nix
     ./packages/system-packages.nix
-    ./users/senku-btw/self.nix
+    ./users/senku-btw/profile.nix
   ];
 
   nix.settings.auto-optimise-store = true;
