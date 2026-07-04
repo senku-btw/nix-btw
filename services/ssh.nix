@@ -18,8 +18,8 @@
       # Retain basic password mechanics if required for fallback
       PasswordAuthentication = true; 
       
-      # Standard modern naming convention replacement for KbdInteractiveAuthentication
-      KVMInteractiveAuthentication = false;
+      # Standard modern naming convention for keyboard-interactive auth
+      KbdInteractiveAuthentication = false;
       
       # Enterprise Hardening: Prevent graphical display forwarding channels
       X11Forwarding = false;
