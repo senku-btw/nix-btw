@@ -3,31 +3,55 @@
 
 {
   imports = [ 
-    ./hardware/baseline.nix
-    ./hardware/nvidia-graphics.nix
-    ./hardware/networking.nix
+    # Core system boot and hardware mapping
+    ./boot/hardware-configuration.nix
+    ./boot/baseline.nix
+    ./boot/networking.nix
+
+    # Hardware drivers
+    ./drivers/nvidia-graphics.nix
+
+    # Core system services & audio pipeline
     ./services/pipewire.nix
+    ./services/wireplumber.nix
     ./services/greetd.nix
-    ./sessions/niri.nix
     ./services/ssh.nix
+
+    # Desktop sessions & user packages
+    ./sessions/niri.nix
     ./packages/system-packages.nix
-    ./users/senku-btw/profile.nix
+
+    # User identity profiles & Home Manager hooks
+    ./profile.nix
   ];
 
-  nix.settings.auto-optimise-store = true;
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+  nix = {
+    settings = {
+      # Enable modern Nix capabilities
+      experimental-features = [ "nix-command" "flakes" ];
+      
+      # Deduplicate the store automatically to save disk space
+      auto-optimise-store = true;
+      
+      # Prevent accidental deletion of build dependencies during GC
+      keep-outputs = true;
+      keep-derivations = true;
+    };
+
+    # Automate storage maintenance & generation pruning
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
 
-  # Enable Flakes and the new 'nix' CLI
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
-  # Allow proprietary/unfree packages (Required for Nvidia drivers)
+  # Permit proprietary binaries (Mandatory for proprietary Nvidia drivers)
   nixpkgs.config.allowUnfree = true;
 
+  # Set system-wide language environment
   i18n.defaultLocale = "en_US.UTF-8";
 
+  # Define system state version for backwards compatibility overrides
   system.stateVersion = "26.05";
 }
