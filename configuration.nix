@@ -8,6 +8,7 @@
     ./hardware/networking.nix
     ./services/pipewire.nix
     ./services/desktop-environment.nix
+    ./packages/system-packages.nix
   ];
 
   nix.settings.auto-optimise-store = true;
@@ -30,14 +31,6 @@
     extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [];
   };
-
-  environment.systemPackages = with pkgs; [
-    nano
-    wget
-    git
-    tree
-    fastfetch
-  ];
 
   programs.gnupg.agent = {
     enable = true;
