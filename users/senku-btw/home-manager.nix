@@ -20,8 +20,8 @@
     # Modern GPU-accelerated terminal emulator
     alacritty
     
-    # Lightweight Wayland application launcher
-    fuzzel
+    # Lightweight, fast Wayland-native application launcher
+    bemenu
   ];
 
   # Out-of-store development symlinks referencing your local dotfiles repository
@@ -29,7 +29,7 @@
     # Direct symlink for Niri window manager layout definitions
     ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/niri/config.kdl";
     
-    # Direct symlink for Fuzzel menu interface options
-    ".config/fuzzel/fuzzel.ini".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/fuzzel/fuzzel.ini";
+    # Direct symlink for Bemenu menu interface options
+    ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/bemenu/config";
   };
 }
