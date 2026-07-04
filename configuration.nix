@@ -9,7 +9,8 @@
     ./services/desktop-environment.nix
   ];
 
-  networking.hostName = "nix-btw";
+  # Changed hostName from "nix-btw" to "nix"
+  networking.hostName = "nix";
 
   networking.networkmanager.enable = true;
   networking.useDHCP = lib.mkDefault true;
@@ -29,8 +30,8 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Changed user from 'groot' to 'batman'
-  users.users.batman = {
+  # Changed user from 'batman' to 'senku-btw'
+  users.users.senku-btw = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [];
