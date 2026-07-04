@@ -1,9 +1,9 @@
-# ~/nix-btw/users/batman/home-manager.nix
+# ~/nix-btw/users/senku/home-manager.nix
 { config, pkgs, ... }:
 
 {
-  home.username = "batman";
-  home.homeDirectory = "/home/batman";
+  home.username = "senku";
+  home.homeDirectory = "/home/senku";
   home.stateVersion = "24.05"; 
 
   programs.home-manager.enable = true;
