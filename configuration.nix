@@ -8,6 +8,7 @@
     ./hardware/networking.nix
     ./services/pipewire.nix
     ./services/desktop-environment.nix
+    ./services/ssh.nix
     ./packages/system-packages.nix
   ];
 
@@ -30,20 +31,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [];
-  };
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = true; 
-      KbdInteractiveAuthentication = true;
-    };
   };
 
   system.stateVersion = "26.05";
