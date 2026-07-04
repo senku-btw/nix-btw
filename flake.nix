@@ -20,8 +20,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          
-          # Updated user attribute and path from 'groot' to 'senku-btw'
+        
           home-manager.users.senku-btw = import ./users/senku-btw/home-manager.nix;
         }
       ];
