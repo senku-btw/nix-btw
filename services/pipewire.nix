@@ -3,7 +3,7 @@
 
 {
   # Disable legacy PulseAudio system daemon to prevent hardware resource locking
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # Enable RealtimeKit for system process priority management (prevents audio crackling)
   security.rtkit.enable = true;
