@@ -1,4 +1,4 @@
-# ~/nix-btw/users/senku-btw/self.nix
+# ~/nix-btw/users/senku-btw/profile.nix
 { config, pkgs, ... }:
 
 {
