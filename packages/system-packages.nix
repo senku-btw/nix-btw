@@ -3,10 +3,22 @@
 
 {
   environment.systemPackages = with pkgs; [
+    # Core system text editor
     nano
+
+    # Network utilities and data retrieval
     wget
+    curl
+
+    # Version control and development essentials
     git
+
+    # System administration and diagnostic utilities
     tree
+    fastfetch
+    htop
+
+    # Desktop integration and mime-type handling
     xdg-utils
   ];
 }
