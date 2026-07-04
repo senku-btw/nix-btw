@@ -2,16 +2,25 @@
 { config, pkgs, ... }:
 
 {
+  # Structural Hook: Link the user's specific Home Manager profile to this system module
+  home-manager.users.senku-btw = import ./home-manager.nix;
+
+  # Core system user declaration
   users.users.senku-btw = {
     isNormalUser = true;
+    description = "Primary Workstation Operator";
+    
+    # Unified group assignments for modern desktop and hardware acceleration pipelines
     extraGroups = [ 
-      "wheel"           # Allows sudo access
-      "networkmanager"  # Allows managing network connections
-      "audio"           # Direct access to audio devices (alsa/jack fallback)
-      "video"           # Direct access to webcam and GPU hardware acceleration
-      "input"           # Access to input devices (useful for certain controllers/utilities)
-      "render"          # Access for graphics rendering (crucial for modern gaming/GPU compute)
+      "wheel"           # Administrative privilege escalation (sudo)
+      "networkmanager"  # Network control capabilities
+      "video"           # Local video device access
+      "input"           # Input event processing permissions
     ];
-    openssh.authorizedKeys.keys = [];
+    
+    # Cryptographic SSH access control lists
+    openssh.authorizedKeys.keys = [
+      # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..." # Add your public deployment key here
+    ];
   };
 }
