@@ -1,28 +1,39 @@
 # ~/nix-btw/services/greetd.nix
 { config, pkgs, lib, ... }:
 
+let
+  # Create a clean, isolated directory containing ONLY the optimized UWSM session
+  customSessions = pkgs.linkFarm "tuigreet-sessions" [
+    {
+      name = "share/wayland-sessions/niri-uwsm.desktop";
+      path = pkgs.writeText "niri-uwsm.desktop" ''
+        [Desktop Entry]
+        Name=Niri (UWSM)
+        Comment=Niri scrollable-tiling compositor managed by UWSM
+        Exec=${lib.getExe pkgs.uwsm} start niri-uwsm.desktop
+        Type=Application
+      '';
+    }
+  ];
+in
 {
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        # Using lib.getExe for robust binary paths.
-        # We explicitly point tuigreet to the system-wide wayland-sessions directory 
-        # where UWSM exposes its optimized compositor wrappers.
+        # Point tuigreet EXCLUSIVELY to our isolated custom directory
         command = ''
           ${lib.getExe pkgs.tuigreet} \
             --time \
             --remember \
             --remember-session \
-            --sessions /run/current-system/sw/share/wayland-sessions
+            --sessions ${customSessions}/share/wayland-sessions
         '';
         user = "greeter";
       };
     };
   };
 
-  # Production-hardened Systemd TTY Override Guard
-  # Prevents boot log bleeding, handles vt switching safely, and isolates execution.
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
     StandardInput = "tty";
