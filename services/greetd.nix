@@ -2,23 +2,25 @@
 { config, pkgs, ... }:
 
 {
-  # Configure greetd with the Ultra-Lightweight TUI Greeter
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri";
+        # Configured tuigreet to look dynamically inside the system's wayland-sessions folder
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --wsessions /run/current-system/sw/share/wayland-sessions";
         user = "greeter";
       };
     };
   };
 
-  # Systemd TTY Override Guard
-  systemd.services.greetd.serviceConfig.Type = "idle";
-  systemd.services.greetd.serviceConfig.StandardInput = "tty";
-  systemd.services.greetd.serviceConfig.StandardOutput = "tty";
-  systemd.services.greetd.serviceConfig.StandardError = "journal";
-  systemd.services.greetd.serviceConfig.TTYReset = true;
-  systemd.services.greetd.serviceConfig.TTYVHangup = true;
-  systemd.services.greetd.serviceConfig.TTYVTDisallocate = true;
+  # Systemd TTY Override Guard to prevent boot log bleeding
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    StandardError = "journal";
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
+  };
 }
