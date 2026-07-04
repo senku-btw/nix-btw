@@ -16,7 +16,6 @@
     # System administration and diagnostic utilities
     tree
     fastfetch
-    htop
 
     # Desktop integration and mime-type handling
     xdg-utils
