@@ -26,7 +26,7 @@
       "54-disable-pro-sinks" = {
         "monitor.alsa.rules" = [
           {
-            # Split into discrete match elements to ensure proper logical OR processing
+            # Discrete match elements ensure proper logical OR evaluation by the parser
             matches = [
               { "node.name" = "alsa_output.pci-0000_08_00.1.pro-output-8"; }
               { "node.name" = "alsa_output.pci-0000_08_00.1.pro-output-9"; }
