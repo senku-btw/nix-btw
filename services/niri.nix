@@ -21,11 +21,4 @@
     SDL_VIDEODRIVER = "wayland";       
     _JAVA_AWT_WM_NONREPARENTING = "1"; 
   };
-
-  # Core Minimal Desktop Tooling Block
-  environment.systemPackages = with pkgs; [
-    alacritty       
-    xdg-utils       
-    fuzzel          
-  ];
 }
