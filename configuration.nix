@@ -5,16 +5,11 @@
   imports = [ 
     ./hardware/baseline.nix
     ./hardware/nvidia-graphics.nix
+    ./hardware/networking.nix
     ./services/pipewire.nix
     ./services/desktop-environment.nix
   ];
 
-  # Changed hostName from "nix-btw" to "nix"
-  networking.hostName = "nix";
-
-  networking.networkmanager.enable = true;
-  networking.useDHCP = lib.mkDefault true;
-  
   nix.settings.auto-optimise-store = true;
   nix.gc = {
     automatic = true;
@@ -30,7 +25,6 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Changed user from 'batman' to 'senku-btw'
   users.users.senku-btw = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
@@ -58,8 +52,6 @@
       KbdInteractiveAuthentication = true;
     };
   };
-
-  networking.firewall.allowedTCPPorts = [ 22 ];
 
   system.stateVersion = "26.05";
 }
