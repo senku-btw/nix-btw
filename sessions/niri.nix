@@ -5,7 +5,7 @@
   # 1. Enable Niri infrastructure natively via NixOS options
   programs.niri.enable = true;
 
-  # 2. Modern Session Management via UWSM (Universal Wayland Session Manager)
+  # 2. Modern Session Management via UWSM
   programs.uwsm = {
     enable = true;
     waylandCompositors = {
@@ -19,15 +19,13 @@
   };
 
   # 3. Handle Graphical Session Environment Safely
-  environment.sessionVariables = lib.mkForce {}; # Flushes legacy top-level environments
+  environment.sessionVariables = lib.mkForce {}; # Clean up global environment hooks
 
-  # FIX: Replaced deprecated extraConfig with structured Manager settings
-  systemd.user.settings.Manager = {
-    DefaultEnvironment = {
-      WLR_NO_HARDWARE_CURSORS = "1";
-      _JAVA_AWT_WM_NONREPARENTING = "1";
-      SDL_VIDEODRIVER = "wayland,x11";
-      QT_QPA_PLATFORM = "wayland;xcb";
-    };
+  # Correct type-safe way to inject user session environment variables into systemd
+  systemd.user.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    SDL_VIDEODRIVER = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
   };
 }
