@@ -1,18 +1,28 @@
 # ~/nix-btw/services/greetd.nix
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions:${config.services.displayManager.sessionData.desktops}/share/xsessions";
+        # Using lib.getExe for robust binary paths.
+        # We explicitly point tuigreet to the system-wide wayland-sessions directory 
+        # where UWSM exposes its optimized compositor wrappers.
+        command = ''
+          ${lib.getExe pkgs.tuigreet} \
+            --time \
+            --remember \
+            --remember-session \
+            --sessions /run/current-system/sw/share/wayland-sessions
+        '';
         user = "greeter";
       };
     };
   };
 
-  # Systemd TTY Override Guard to prevent boot log bleeding
+  # Production-hardened Systemd TTY Override Guard
+  # Prevents boot log bleeding, handles vt switching safely, and isolates execution.
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
     StandardInput = "tty";
