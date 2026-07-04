@@ -8,5 +8,6 @@
     git
     tree
     fastfetch
+    pavucontrol
   ];
 }
