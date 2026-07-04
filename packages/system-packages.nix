@@ -7,7 +7,5 @@
     wget
     git
     tree
-    fastfetch
-    pavucontrol
   ];
 }
