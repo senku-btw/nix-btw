@@ -1,9 +1,9 @@
-# ~/nix-btw/users/senku/home-manager.nix
+# ~/nix-btw/users/senku-btw/home-manager.nix
 { config, pkgs, ... }:
 
 {
-  home.username = "senku";
-  home.homeDirectory = "/home/senku";
+  home.username = "senku-btw";
+  home.homeDirectory = "/home/senku-btw";
   home.stateVersion = "24.05"; 
 
   programs.home-manager.enable = true;
