@@ -5,16 +5,13 @@
   # Enable Niri Infrastructure
   programs.niri.enable = true;
 
-  # Route toolkit overrides the safe way
-  environment.sessionVariables = {
-    # Keep legacy Java and multi-backend fallbacks safe
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    SDL_VIDEODRIVER = "wayland,x11";
-    QT_QPA_PLATFORM = "wayland;xcb";
-  };
-
-  # Direct hardware cursor override to fix the glitching mouse rectangle
-  environment.variables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
+  # Feed the hardware cursor fix and toolkit tweaks directly into Niri's systemd user services
+  systemd.user.services.niri = {
+    environment = {
+      WLR_NO_HARDWARE_CURSORS = "1";
+      _JAVA_AWT_WM_NONREPARENTING = "1";
+      SDL_VIDEODRIVER = "wayland,x11";
+      QT_QPA_PLATFORM = "wayland;xcb";
+    };
   };
 }
