@@ -7,7 +7,8 @@
     ./hardware/nvidia-graphics.nix
     ./hardware/networking.nix
     ./services/pipewire.nix
-    ./services/desktop-environment.nix
+    ./services/greetd.nix
+    ./services/niri.nix
     ./services/ssh.nix
     ./packages/system-packages.nix
     ./users/senku-btw/profile.nix
