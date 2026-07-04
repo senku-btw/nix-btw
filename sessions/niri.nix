@@ -19,13 +19,10 @@
   };
 
   # 3. Handle Graphical Session Environment Safely
-  environment.sessionVariables = lib.mkForce {}; # Clean up global environment hooks
+  environment.sessionVariables = lib.mkForce {}; # Flushes out legacy variable hooks
 
-  # Correct type-safe way to inject user session environment variables into systemd
-  systemd.user.sessionVariables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    SDL_VIDEODRIVER = "wayland,x11";
-    QT_QPA_PLATFORM = "wayland;xcb";
+  # Correct type-safe way to pass environment string formatting to the systemd user manager
+  systemd.user.settings.Manager = {
+    DefaultEnvironment = "\"WLR_NO_HARDWARE_CURSORS=1\" \"_JAVA_AWT_WM_NONREPARENTING=1\" \"SDL_VIDEODRIVER=wayland,x11\" \"QT_QPA_PLATFORM=wayland;xcb\"";
   };
 }
