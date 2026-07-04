@@ -29,7 +29,8 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  users.users.groot = {
+  # Changed user from 'groot' to 'batman'
+  users.users.batman = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
     openssh.authorizedKeys.keys = [];
