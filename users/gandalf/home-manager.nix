@@ -1,4 +1,4 @@
-# ~/nix-btw/users/senku-btw/home-manager.nix
+# ~/nix-btw/users/gandalf/home-manager.nix
 { config, pkgs, ... }:
 
 {
