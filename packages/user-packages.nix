@@ -4,5 +4,6 @@
 {
   users.users.senku-btw.packages = with pkgs; [
     fastfetch
+    pavucontrol
   ];
 }
