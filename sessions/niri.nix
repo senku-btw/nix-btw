@@ -2,24 +2,19 @@
 { config, pkgs, ... }:
 
 {
-  # Enable Niri Wayland Compositor Infrastructure
+  # Enable Niri Infrastructure
   programs.niri.enable = true;
 
-  # Global desktop session variables for app rendering stability
+  # Route toolkit overrides the safe way
   environment.sessionVariables = {
-    # Desktop Environment identification hooks
-    XDG_CURRENT_DESKTOP = "niri";
-    XDG_SESSION_TYPE = "wayland";
-
-    # Toolkit environment force-routing flags for native Wayland execution
-    MOZ_ENABLE_WAYLAND = "1";
-    CLUTTER_BACKEND = "wayland";
-    GDK_BACKEND = "wayland";
+    # Keep legacy Java and multi-backend fallbacks safe
+    _JAVA_AWT_WM_NONREPARENTING = "1";
     SDL_VIDEODRIVER = "wayland,x11";
     QT_QPA_PLATFORM = "wayland;xcb";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    
-    # Prevents blank grey windows in legacy Java GUI frameworks
-    _JAVA_AWT_WM_NONREPARENTING = "1";
+  };
+
+  # Direct hardware cursor override to fix the glitching mouse rectangle
+  environment.variables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 }
