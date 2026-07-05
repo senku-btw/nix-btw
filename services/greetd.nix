@@ -14,9 +14,9 @@
 
   # Peak Performance & Hardened Security Systemd Configuration
   systemd.services.greetd.serviceConfig = {
-    # FIX: Use lib.mkForce to override the module's hardcoded "idle" value safely
     Type = lib.mkForce "simple";
-    IgnoreSIGPIPE = "no";
+    # FIX: Changed "no" string to boolean false to match Nixpkgs types
+    IgnoreSIGPIPE = lib.mkForce false;
     
     # Standard TTY streams
     StandardInput = "tty";
