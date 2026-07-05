@@ -1,9 +1,6 @@
-# ~/nix-btw/users/gandalf/home-manager.nix
 { config, pkgs, ... }:
 
 let
-  dotfilesPath = "${config.home.homeDirectory}/dotfiles/config";
-
   # Highly optimized, zero-overhead execution loop
   bemenu-drun = pkgs.writeShellScriptBin "bemenu-drun" ''
     set -efuo pipefail
@@ -17,26 +14,33 @@ let
   '';
 in
 {
-  # Core Home Manager profile identity
   home.username = "gandalf";
   home.homeDirectory = "/home/gandalf";
   home.stateVersion = "24.11"; 
 
-  # Let Home Manager manage itself natively
   programs.home-manager.enable = true;
 
-  # Lightweight performance-first software packaging
+  # Core applications, tools, and wrappers available globally
   home.packages = [
-    pkgs.bemenu            # Installs compiled core library & binaries
-    pkgs.j4-dmenu-desktop  # Blazing fast C++ desktop database entry crawler
-    pkgs.dex               # Microsecond-level desktop launch translation utility
-    bemenu-drun           # High-efficiency immutable launcher binary
+    pkgs.bemenu
+    pkgs.alacritty        # High-performance, GPU-accelerated terminal emulator
+    pkgs.pavucontrol      # PulseAudio/PipeWire volume control GUI
+    pkgs.j4-dmenu-desktop # Blazing fast C++ desktop entry crawler available in PATH
+    pkgs.dex              # Desktop launch translation utility available in PATH
+    bemenu-drun
   ];
 
-  # Start the SSH Agent automatically upon user sign-in
+  # Out-of-store symlinks for runtime mutability
+  home.file = {
+    # Niri configuration symlink
+    ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/niri/config.kdl";
+
+    # Bemenu configuration symlink
+    ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/bemenu/config";
+  };
+
   services.ssh-agent.enable = true;
 
-  # Enterprise Standard: Unified, warning-free SSH configuration block
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; 
@@ -47,3 +51,4 @@ in
       };
     };
   };
+}
