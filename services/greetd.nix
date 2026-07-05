@@ -12,25 +12,17 @@
     };
   };
 
+  # Production-Grade Lifecycle Configuration (Relying on safe NixOS Defaults)
   systemd.services.greetd.serviceConfig = {
-    Type = lib.mkForce "simple";
-    IgnoreSIGPIPE = lib.mkForce false;
+    # Keep the default "idle" type to guarantee the graphics pipeline is fully up before running
+    Type = lib.mkForce "idle";
     
-    # Standard TTY streams
+    # Standard TTY streams required for a clean text/graphical interface handoff
     StandardInput = "tty";
     StandardOutput = "tty";
     StandardError = "journal";
     TTYReset = true;
     TTYVHangup = true;
     TTYVTDisallocate = true;
-
-    # Enterprise Hardening (Optimized for Hardware Initialization)
-    # We broaden DeviceAllow to allow all character devices to prevent DRM/graphics seat race conditions
-    CapabilityBoundingSet = [ "CAP_SYS_TTY_CONFIG" "CAP_AUDIT_WRITE" ];
-    DeviceAllow = [ "char-* rw" ]; 
-    ProtectSystem = "strict";
-    ProtectHome = true;
-    PrivateTmp = true;
-    RestrictRealtime = true;
   };
 }
