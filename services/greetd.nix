@@ -1,39 +1,19 @@
 # ~/nix-btw/services/greetd.nix
 { config, pkgs, lib, ... }:
 
-let
-  # Create a clean, isolated directory containing ONLY the optimized UWSM session
-  customSessions = pkgs.linkFarm "tuigreet-sessions" [
-    {
-      name = "share/wayland-sessions/niri-uwsm.desktop";
-      path = pkgs.writeText "niri-uwsm.desktop" ''
-        [Desktop Entry]
-        Name=Niri (UWSM)
-        Comment=Niri scrollable-tiling compositor managed by UWSM
-        Exec=${lib.getExe pkgs.uwsm} start niri-uwsm.desktop
-        Type=Application
-      '';
-    }
-  ];
-in
 {
   services.greetd = {
     enable = true;
     settings = {
       default_session = {
-        # Point tuigreet EXCLUSIVELY to our isolated custom directory
-        command = ''
-          ${lib.getExe pkgs.tuigreet} \
-            --time \
-            --remember \
-            --remember-session \
-            --sessions ${customSessions}/share/wayland-sessions
-        '';
+        # Rely on the standard NixOS session paths rather than building isolated directories.
+        command = "${lib.getExe pkgs.greetd.tuigreet} --time --remember --remember-session --sessions /run/current-system/sw/share/wayland-sessions";
         user = "greeter";
       };
     };
   };
 
+  # Optimized systemd service configurations for a robust TTY experience
   systemd.services.greetd.serviceConfig = {
     Type = "idle";
     StandardInput = "tty";
