@@ -2,8 +2,11 @@
 { config, pkgs, ... }:
 
 {
-  # Structural Hook: Link the user's specific Home Manager profile to this system module
-  home-manager.users.gandalf = import ./home-manager.nix;
+  # Structural Hook: Modern, declarative user profile linking
+  home-manager.users.gandalf = {
+    # Enterprise Standard: Import as a module rather than a raw functional import
+    imports = [ ./home-manager.nix ];
+  };
 
   # Core system user declaration
   users.users.gandalf = {
@@ -19,7 +22,7 @@
     
     # Cryptographic SSH access control lists
     openssh.authorizedKeys.keys = [
-      # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..." # Add your public deployment key here
+      # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..." 
     ];
   };
 }
