@@ -14,8 +14,11 @@ let
       pkgs.dex 
     ];
 
-    # Absolute-path execution matrix: eliminates PATH crawling lookups and prevents execution hijacking.
+    # Hardened, zero-latency execution context.
+    # Forces Wayland backend explicitly to completely bypass protocol negotiation overhead.
     text = ''
+      export BEMENU_BACKEND="wayland"
+      
       exec ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop \
         --dmenu="${pkgs.bemenu}/bin/bemenu --prompt 'run:'" \
         --term="${pkgs.alacritty}/bin/alacritty" \
@@ -25,40 +28,42 @@ let
   };
 in
 {
-  # Target Environment Context: Configures identity parameters and evaluation baselines.
+  # Target Environment Context
   home.username = "gandalf";
   home.homeDirectory = "/home/gandalf";
   home.stateVersion = "24.11"; 
 
-  # Core Service State: Enables declarative user environment lifecycle management.
+  # Core Service State
   programs.home-manager.enable = true;
 
-  # Declared System Architecture Tools: Explicit dependency injection into the user profile.
+  # Tailored System Architecture Tools:
+  # Retains standalone environment entry points per user specification,
+  # while keeping invisible internal utilities (j4-dmenu-desktop, dex) isolated.
   home.packages = [
-    pkgs.bemenu             # Native Wayland dynamic menu
-    pkgs.alacritty          # GPU-accelerated terminal emulator
-    pkgs.pavucontrol        # PulseAudio/PipeWire volume control interface
-    pkgs.j4-dmenu-desktop   # High-performance desktop entry parser (C++)
-    pkgs.dex                # Desktop Entry Execution utility
-    bemenu-drun             # Optimized execution entry point
+    pkgs.bemenu       # Retained for general environment usage
+    pkgs.alacritty    # Retained for standalone terminal access
+    pkgs.pavucontrol  # Retained for standalone audio control
+    bemenu-drun      # Optimized execution entry point
   ];
 
-  # Runtime Environment Dotfiles: Maps mutable file system entries to dotfile sources.
+  # Runtime Environment Dotfiles (Maintained per out-of-store constraint)
   home.file = {
     ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/niri/config.kdl";
     ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/bemenu/config";
   };
 
-  # Cryptographic Identity Subsystem: Spawns the background authentication key management daemon.
+  # Cryptographic Identity Subsystem
   services.ssh-agent.enable = true;
 
-  # Secure Remote Shell Architecture: Configures transport policies, sandboxing, and identity scopes.
+  # Secure Remote Shell Architecture: Hardened Paranoid Posture
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; # Hardens security posture by rejecting ambient system configurations
     settings = {
       "*" = {
-        AddKeysToAgent = "yes";    # Automates key unlocking to eliminate interactive prompt overhead
+        # Automates key unlocking while mitigating long-term memory exploitation.
+        # Key automatically evicts after 1 hour to prevent indefinite ambient agent access if compromised.
+        AddKeysToAgent = "1h"; 
         IdentityFile = "~/.ssh/pandora"; # Enforces a unified cryptokey boundary across hosts
       };
     };
