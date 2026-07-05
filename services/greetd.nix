@@ -12,10 +12,8 @@
     };
   };
 
-  # Peak Performance & Hardened Security Systemd Configuration
   systemd.services.greetd.serviceConfig = {
     Type = lib.mkForce "simple";
-    # FIX: Changed "no" string to boolean false to match Nixpkgs types
     IgnoreSIGPIPE = lib.mkForce false;
     
     # Standard TTY streams
@@ -26,9 +24,10 @@
     TTYVHangup = true;
     TTYVTDisallocate = true;
 
-    # Enterprise Hardening & Security Sandboxing
+    # Enterprise Hardening (Optimized for Hardware Initialization)
+    # We broaden DeviceAllow to allow all character devices to prevent DRM/graphics seat race conditions
     CapabilityBoundingSet = [ "CAP_SYS_TTY_CONFIG" "CAP_AUDIT_WRITE" ];
-    DeviceAllow = [ "/dev/tty1 rwm" "/dev/dri/card* rwm" "/dev/dri/renderD* rw" "/dev/input/* r" ];
+    DeviceAllow = [ "char-* rw" ]; 
     ProtectSystem = "strict";
     ProtectHome = true;
     PrivateTmp = true;
