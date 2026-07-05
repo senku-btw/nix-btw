@@ -1,12 +1,24 @@
 # ~/nix-btw/users/gandalf/home-manager.nix
 { config, pkgs, ... }:
 
+let
+  dotfilesPath = "${config.home.homeDirectory}/dotfiles/config";
+
+  # Robust, production-grade Wayland launcher wrapper
+  bemenu-drun = pkgs.writeShellScriptBin "bemenu-drun" ''
+    set -euo pipefail
+
+    # Execute j4-dmenu-desktop natively inside Wayland using dex
+    exec ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop \
+      --dmenu="${pkgs.bemenu}/bin/bemenu" \
+      --term="${pkgs.alacritty}/bin/alacritty" \
+      --wrapper="${pkgs.dex}/bin/dex"
+  '';
+in
 {
   # Core Home Manager profile identity
   home.username = "gandalf";
   home.homeDirectory = "/home/gandalf";
-  
-  # Tracks the initial installation release state for stateful data compatibility
   home.stateVersion = "24.11"; 
 
   # Let Home Manager manage itself natively
@@ -16,7 +28,10 @@
   home.packages = with pkgs; [
     pavucontrol
     alacritty
-    bemenu
+    bemenu            # Core binary utilities
+    j4-dmenu-desktop  # High-performance .desktop parser
+    dex               # Native XDG execution handler for Wayland
+    bemenu-drun       # Our immutable, production-grade wrapper script
   ];
 
   # Start the SSH Agent automatically upon user sign-in
@@ -25,19 +40,18 @@
   # Enterprise Standard: Unified, warning-free SSH configuration block
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false; # Mutes the impending upstream default values warning
-
+    enableDefaultConfig = false; 
     settings = {
       "*" = {
-        AddKeysToAgent = "yes";              # Automatically add keys to the running agent on first use
-        IdentityFile = "~/.ssh/pandora";     # Tells SSH to look for your specific private key file
+        AddKeysToAgent = "yes";
+        IdentityFile = "~/.ssh/pandora";
       };
     };
   };
 
   # Out-of-store development symlinks referencing your local dotfiles repository
   home.file = {
-    ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/niri/config.kdl";
-    ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/.config/bemenu/config";
+    ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/niri/config.kdl";
+    ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/bemenu/config";
   };
 }
