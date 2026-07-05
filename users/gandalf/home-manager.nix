@@ -19,17 +19,18 @@
     bemenu
   ];
 
-  # 1. Start the SSH Agent automatically upon user sign-in
+  # Start the SSH Agent automatically upon user sign-in
   services.ssh-agent.enable = true;
 
-  # 2. Configure SSH to automatically load your "pandora" key
+  # Enterprise Standard: Unified, warning-free SSH configuration block
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes"; # Automatically add keys to the running agent on first use
-    matchBlocks = {
+    enableDefaultConfig = false; # Mutes the impending upstream default values warning
+
+    settings = {
       "*" = {
-        # Tells SSH to look for your specific private key file
-        identityFile = "~/.ssh/pandora"; 
+        AddKeysToAgent = "yes";              # Automatically add keys to the running agent on first use
+        IdentityFile = "~/.ssh/pandora";     # Tells SSH to look for your specific private key file
       };
     };
   };
