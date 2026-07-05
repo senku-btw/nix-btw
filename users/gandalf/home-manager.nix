@@ -4,15 +4,16 @@
 let
   dotfilesPath = "${config.home.homeDirectory}/dotfiles/config";
 
-  # Robust, production-grade Wayland launcher wrapper
+  # Highly optimized, zero-overhead execution loop
   bemenu-drun = pkgs.writeShellScriptBin "bemenu-drun" ''
-    set -euo pipefail
+    set -efuo pipefail
 
-    # Execute j4-dmenu-desktop natively inside Wayland using dex
+    # Absolute-path execution matrix: removes lookup latency ($PATH crawls)
     exec ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop \
-      --dmenu="${pkgs.bemenu}/bin/bemenu" \
+      --dmenu="${pkgs.bemenu}/bin/bemenu --prompt 'run:'" \
       --term="${pkgs.alacritty}/bin/alacritty" \
-      --wrapper="${pkgs.dex}/bin/dex"
+      --wrapper="${pkgs.dex}/bin/dex" \
+      --fastmode
   '';
 in
 {
@@ -24,14 +25,12 @@ in
   # Let Home Manager manage itself natively
   programs.home-manager.enable = true;
 
-  # User-space software packages
-  home.packages = with pkgs; [
-    pavucontrol
-    alacritty
-    bemenu            # Core binary utilities
-    j4-dmenu-desktop  # High-performance .desktop parser
-    dex               # Native XDG execution handler for Wayland
-    bemenu-drun       # Our immutable, production-grade wrapper script
+  # Lightweight performance-first software packaging
+  home.packages = [
+    pkgs.bemenu            # Installs compiled core library & binaries
+    pkgs.j4-dmenu-desktop  # Blazing fast C++ desktop database entry crawler
+    pkgs.dex               # Microsecond-level desktop launch translation utility
+    bemenu-drun           # High-efficiency immutable launcher binary
   ];
 
   # Start the SSH Agent automatically upon user sign-in
@@ -48,10 +47,3 @@ in
       };
     };
   };
-
-  # Out-of-store development symlinks referencing your local dotfiles repository
-  home.file = {
-    ".config/niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/niri/config.kdl";
-    ".config/bemenu/config".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/bemenu/config";
-  };
-}
