@@ -2,26 +2,20 @@
 { config, pkgs, ... }:
 
 {
-  # Enable GnuPG agent with integrated SSH keys authentication support
+  # Enable GnuPG agent without hijacking SSH keys authentication
   programs.gnupg.agent = {
     enable = true;
-    enableSSHSupport = true;
+    enableSSHSupport = false; # Set to false so it doesn't conflict with Home Manager's ssh-agent
   };
 
   # Secure OpenSSH daemon infrastructure configuration
+  # This automatically runs at system launch!
   services.openssh = {
     enable = true;
     settings = {
-      # Disable administrative root login access over network entrypoints
       PermitRootLogin = "no";
-      
-      # Retain basic password mechanics if required for fallback
       PasswordAuthentication = true; 
-      
-      # Standard modern naming convention for keyboard-interactive auth
       KbdInteractiveAuthentication = false;
-      
-      # Enterprise Hardening: Prevent graphical display forwarding channels
       X11Forwarding = false;
     };
   };
