@@ -10,13 +10,14 @@
       niri = {
         prettyName = "Niri";
         comment = "Niri scrollable-tiling compositor managed by UWSM";
-        binPath = lib.getExe pkgs.niri;
+        binPath = "${lib.getExe pkgs.niri}";
+        # ENTERPRISE FIX: Bypass the wrapper script by passing the native session flag directly to the binary
+        extraArgs = [ "--session" ]; 
       };
     };
   };
 
-  # Enterprise Standard: Define variables natively as an attribute set.
-  # UWSM will automatically inject these into the Wayland session and Systemd user instance.
+  # Modern, declarative user variables automatically handled by UWSM
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
     _JAVA_AWT_WM_NONREPARENTING = "1";
