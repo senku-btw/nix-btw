@@ -14,5 +14,7 @@
 ## Philosophy
 
 * **Absolute Minimalism:** Zero bloat. Every package, daemon, and kernel module is meticulously evaluated for necessity, ensuring a razor-thin resource footprint and a heavily minimized attack surface.
+
 * **Hyper-Performance:** Finely-tuned memory subsystem optimizations paired with a low-latency, high-throughput kernel to deliver a fluid, uncompromisingly responsive computing environment.
+
 * **Production-Grade Infrastructure:** Deterministic deployments under rigorously isolated environments, preserving a pristine host system while ensuring uncompromising reproducibility.
