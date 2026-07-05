@@ -14,8 +14,8 @@
 
   # Peak Performance & Hardened Security Systemd Configuration
   systemd.services.greetd.serviceConfig = {
-    # Speed Optimization: Instant execution alongside system initialization
-    Type = "simple";
+    # FIX: Use lib.mkForce to override the module's hardcoded "idle" value safely
+    Type = lib.mkForce "simple";
     IgnoreSIGPIPE = "no";
     
     # Standard TTY streams
@@ -27,7 +27,6 @@
     TTYVTDisallocate = true;
 
     # Enterprise Hardening & Security Sandboxing
-    # Ensures the greeter process runs with the absolute bare minimum privileges required for a display manager
     CapabilityBoundingSet = [ "CAP_SYS_TTY_CONFIG" "CAP_AUDIT_WRITE" ];
     DeviceAllow = [ "/dev/tty1 rwm" "/dev/dri/card* rwm" "/dev/dri/renderD* rw" "/dev/input/* r" ];
     ProtectSystem = "strict";
