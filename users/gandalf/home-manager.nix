@@ -1,36 +1,11 @@
 # ~/nix-btw/users/gandalf/home-manager.nix
 { config, pkgs, ... }:
 
-let
-  # Ultra-low latency, compile-time verified desktop application runner.
-  # Utilizes writeShellApplication to enforce ShellCheck validation and strict error handling.
-  bemenu-drun = pkgs.writeShellApplication {
-    name = "bemenu-drun";
-    
-    # Explicitly pin runtime dependencies to isolate execution environment.
-    runtimeInputs = [ 
-      pkgs.j4-dmenu-desktop 
-      pkgs.bemenu 
-      pkgs.alacritty 
-      pkgs.dex
-    ];
-
-    # Hardened, zero-latency execution context.
-    # Forces Wayland backend explicitly to completely bypass protocol negotiation overhead.
-    text = ''
-      export BEMENU_BACKEND="wayland"
-      
-      exec ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop \
-        --dmenu="${pkgs.bemenu}/bin/bemenu --prompt 'run:'" \
-        --term="${pkgs.alacritty}/bin/alacritty" \
-        --wrapper="${pkgs.dex}/bin/dex"
-    '';
-  };
-in
 {
   imports = [
-    # Appends user-space desktop applications module
+    # Appends user-space application and environment modules
     ../../packages/desktop-applications.nix
+    ../../packages/environment-packages.nix
   ];
 
   # Target Environment Context
@@ -40,16 +15,6 @@ in
 
   # Core Service State
   programs.home-manager.enable = true;
-
-  # Tailored System Architecture Tools:
-  # Retains standalone environment entry points per user specification,
-  # while keeping invisible internal utilities (j4-dmenu-desktop, dex) isolated.
-  home.packages = [
-    pkgs.bemenu       # Retained for general environment usage
-    pkgs.alacritty    # Retained for standalone terminal access
-    pkgs.pavucontrol  # Retained for standalone audio control
-    bemenu-drun       # Optimized execution entry point
-  ];
 
   # Runtime Environment Dotfiles (Maintained per out-of-store constraint)
   home.file = {
