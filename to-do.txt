@@ -4,7 +4,7 @@
 - [ ] Disable/hide NixOS Manual
 - [ ] Disable/hide System Manual
 - [ ] Chrome shows up as "Web Browser"
-- [ ] Create desktop-applications.nix inside packages to put google-chrome and obsidian in
+- [x] Create desktop-applications.nix inside packages to put google-chrome and obsidian in
 - [ ] Calling enviroment variables deprecated Niri
 - [ ] Installing Zen Linux Kernel
 
