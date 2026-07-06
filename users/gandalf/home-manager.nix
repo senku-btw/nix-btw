@@ -11,7 +11,7 @@ let
       pkgs.j4-dmenu-desktop 
       pkgs.bemenu 
       pkgs.alacritty 
-      pkgs.dex 
+      pkgs.dex
     ];
 
     # Hardened, zero-latency execution context.
@@ -22,8 +22,7 @@ let
       exec ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop \
         --dmenu="${pkgs.bemenu}/bin/bemenu --prompt 'run:'" \
         --term="${pkgs.alacritty}/bin/alacritty" \
-        --wrapper="${pkgs.dex}/bin/dex" \
-        --fastmode
+        --wrapper="${pkgs.dex}/bin/dex"
     '';
   };
 in
@@ -43,7 +42,8 @@ in
     pkgs.bemenu       # Retained for general environment usage
     pkgs.alacritty    # Retained for standalone terminal access
     pkgs.pavucontrol  # Retained for standalone audio control
-    bemenu-drun      # Optimized execution entry point
+    bemenu-drun       # Optimized execution entry point
+    pkgs.google-chrome
   ];
 
   # Runtime Environment Dotfiles (Maintained per out-of-store constraint)
