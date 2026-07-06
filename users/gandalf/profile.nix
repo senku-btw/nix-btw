@@ -1,28 +1,45 @@
-# ~/nix-btw/users/gandalf/profile.nix
-{ config, pkgs, ... }:
+# ~/nix-btw/users/senku/profile.nix
+{ config, pkgs, lib, ... }:
 
+let
+  cfg = config.profiles.senku;
+in
 {
-  # Structural Hook: Modern, declarative user profile linking
-  home-manager.users.gandalf = {
-    # Enterprise Standard: Import as a module rather than a raw functional import
-    imports = [ ./home-manager.nix ];
+  # Module composition
+  imports = [ 
+    ./home-manager.nix 
+  ];
+
+  # Module option declarations
+  options.profiles.senku = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
-  # Core system user declaration
-  users.users.gandalf = {
-    isNormalUser = true;
-    
-    # Unified group assignments for modern desktop and hardware acceleration pipelines
-    extraGroups = [ 
-      "wheel"           # Administrative privilege escalation (sudo)
-      "networkmanager"  # Network control capabilities
-      "video"           # Local video device access
-      "input"           # Input event processing permissions
-    ];
-    
-    # Cryptographic SSH access control lists
-    openssh.authorizedKeys.keys = [
-      # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..." 
-    ];
+  # Target configuration implementation
+  config = lib.mkIf cfg.enable {
+    # Home Manager integration hooks
+    home-manager.users.senku = {
+      imports = [ ./home-manager.nix ];
+    };
+
+    # System user account definitions
+    users.users.senku = {
+      isNormalUser = true;
+      description = "Senku Ishigami";
+      extraGroups = [ 
+        "wheel" 
+        "networkmanager" 
+        "video" 
+        "input" 
+      ];
+      
+      # Security and access controls
+      openssh.authorizedKeys.keys = [
+        # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
+      ];
+    };
   };
 }
