@@ -1,3 +1,4 @@
+# ~/nix-btw/users/gandalf/home-manager.nix
 { config, pkgs, ... }:
 
 let
@@ -27,6 +28,11 @@ let
   };
 in
 {
+  imports = [
+    # Appends user-space desktop applications module
+    ../../packages/desktop-applications.nix
+  ];
+
   # Target Environment Context
   home.username = "gandalf";
   home.homeDirectory = "/home/gandalf";
@@ -43,7 +49,6 @@ in
     pkgs.alacritty    # Retained for standalone terminal access
     pkgs.pavucontrol  # Retained for standalone audio control
     bemenu-drun       # Optimized execution entry point
-    pkgs.google-chrome
   ];
 
   # Runtime Environment Dotfiles (Maintained per out-of-store constraint)
