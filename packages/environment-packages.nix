@@ -19,12 +19,10 @@ let
   };
 in
 {
-  config = {
-    home.packages = [
-      bemenu-drun
-      pkgs.alacritty
-      pkgs.bemenu
-      pkgs.pavucontrol
-    ];
-  };
+  home.packages = [
+    bemenu-drun
+    pkgs.alacritty
+    pkgs.bemenu
+    pkgs.pavucontrol
+  ];
 }
