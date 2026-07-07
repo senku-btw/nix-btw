@@ -5,22 +5,22 @@ let
   cfg = config.profiles.senku;
 in
 {
-  # Module composition
+  # Module composition -> Empty this or remove it entirely!
   imports = [ 
-    ./home-manager.nix 
+    # REMOVED ./home-manager.nix from here
   ];
 
   # Module option declarations
   options.profiles.senku = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = false;
+      default = false; # Note: Make sure you set profiles.senku.enable = true; in configuration.nix!
     };
   };
 
   # Target configuration implementation
   config = lib.mkIf cfg.enable {
-    # Home Manager integration hooks
+    # Home Manager integration hooks (This is the ONLY place this should be imported)
     home-manager.users.senku = {
       imports = [ ./home-manager.nix ];
     };
