@@ -19,7 +19,6 @@ let
   };
 in
 {
-  # This ensures it maps straight to user space when imported by Home Manager
   config = {
     home.packages = [
       bemenu-drun
