@@ -20,6 +20,7 @@
     # Desktop sessions & user packages
     ./sessions/niri.nix
     ./packages/system-packages.nix
+    ./packages/environment-packages.nix
 
     # User identity profiles & Home Manager hooks
     ./users/senku/profile.nix
