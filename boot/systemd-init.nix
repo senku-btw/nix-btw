@@ -11,13 +11,13 @@
     device = "/dev/nvme0n1p2";
     preLVM = true;
     allowDiscards = true;
-    bypassWorkqueues = true;  # Direct crypto execution, bypassing CPU workqueue lag
+    bypassWorkqueues = true; # Direct crypto execution, bypassing CPU workqueue lag
   };
 
   # Use the XanMod kernel for tier-one desktop responsiveness and scheduling
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
-  # Instantly boots the default generation without showing the menu (Hold Space/Shift to force it)
+  # Instantly boots the default generation without showing the menu
   boot.loader.timeout = 0;
 
   # Initrd & systemd streamlining (minimalism)
@@ -46,7 +46,7 @@
     "libahci.ignore_sss=1"          # Disable staggered spin-up delays for SATA
     "lp=0"                          # Skip legacy parallel port probing
     "io_delay=none"                 # Disable legacy x86 ISA bus timing delays
-    "noatime"                       # Redundant mount flag (handled below), safe to ignore
+    "noatime"                       # Redundant mount flag, safe to ignore
     "fbcon=nodefer"                 # Defer framebuffer initialization for clean LUKS prompt
   ];
 
@@ -55,11 +55,11 @@
     fsType = "btrfs";
     options = [ 
       "subvol=@" 
-      "noatime"                     # Eliminates metadata write overhead whenever files are read
-      "nodiratime"                  # Applies the same read optimization to system directories
-      "discard=async"               # Uses asynchronous background block trims for NVMe lifespans
-      "space_cache=v2"              # Uses the high-velocity free space tracking index
-      "compress=zstd:1"             # Fast, low-overhead compression
+      "noatime"
+      "nodiratime"
+      "discard=async"
+      "space_cache=v2"
+      "compress=zstd:1"
     ];
   };
 }
