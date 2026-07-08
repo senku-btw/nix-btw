@@ -2,22 +2,20 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Bootloader & storage architecture (hyper-speed / secure)
+  # Bootloader Architecture
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
-  # Speed optimization: Instant bypass of the systemd-boot menu delay
-  boot.loader.timeout = 0;
-
-  # LUKS encrypted root configuration
+ 
+  # LUKS Encrypted Container initialization
   boot.initrd.luks.devices."enc-pv" = {
     device = "/dev/nvme0n1p2";
     preLVM = true;
     allowDiscards = true;
-    
-    # Speed optimization: Direct crypto execution, bypassing CPU workqueue lag
-    bypassWorkqueues = true;
+    bypassWorkqueues = true;  # Direct crypto execution, bypassing CPU workqueue lag
   };
+
+  # Instantly boots the default generation without showing the menu (Hold Space/Shift to force it)
+  boot.loader.timeout = 0;
 
   # Use the XanMod kernel for tier-one desktop responsiveness and scheduling
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
@@ -34,47 +32,35 @@
   boot.initrd.verbose = false; 
 
   boot.kernelParams = [
-    # General output suppression
-    "quiet"
-
-    # Kernel ring-buffer logging level (Emergency only)
-    "loglevel=0"
-    "printk.devkmsg=off"
-
-    # Silence systemd framework status and unit tracking dumps
-    "systemd.show_status=false"
-    "rd.systemd.show_status=false"
-    "systemd.log_level=err" 
-
-    # Silence hardware discovery alerts (udev)
-    "udev.log_level=0" 
-    "rd.udev.log_level=0"
-
-    # Suppress motherboard firmware/ACPI interpreter glitches
-    "acpi.log_errors=0"
-    "vt.global_cursor_default=0" # Kills blinking cursor leaking onto dark screen
-    
-    # Storage and Hardware speed tweaks
-    "fastboot"                   # Skips storage topology self-tests
-    "libahci.ignore_sss=1"       # Disables staggered spin-up wait loops
-    "lp=0"                       # Skips legacy parallel printer port loops
-    "io_delay=none"              # Drops legacy x86 hardware ISA timing delay loops
-    "noatime"                    # Drops mapping write triggers on file reads
-    
-    # Keep screen totally dark until the interactive LUKS prompt fires
-    "fbcon=nodefer"              
+    "quiet"                         # Suppress standard boot messages
+    "loglevel=0"                    # Only log critical kernel emergencies
+    "printk.devkmsg=off"            # Silence early kernel dmesg logging to console
+    "systemd.show_status=false"     # Hide systemd service status dumps
+    "rd.systemd.show_status=false"  # Hide systemd status dumps in initrd
+    "systemd.log_level=err"         # Limit systemd logging to errors only
+    "udev.log_level=0"              # Silence hardware discovery logging
+    "rd.udev.log_level=0"           # Silence initrd hardware discovery logging
+    "acpi.log_errors=0"             # Mask non-fatal motherboard ACPI errors
+    "vt.global_cursor_default=0"    # Disable blinking console cursor
+    "fastboot"                      # Skip storage topology self-tests
+    "libahci.ignore_sss=1"          # Disable staggered spin-up delays for SATA
+    "lp=0"                          # Skip legacy parallel port probing
+    "io_delay=none"                 # Disable legacy x86 ISA bus timing delays
+    "noatime"                       # Redundant mount flag (handled below), safe to ignore
+    "fbcon=nodefer"                 # Defer framebuffer initialization for clean LUKS prompt
   ];
 
   # High-performance runtime storage (Btrfs tuning)
+  # The absolute device path is safely managed by hardware-configuration.nix
   fileSystems."/" = {
-    # The absolute device path is safely managed by hardware-configuration.nix
     fsType = "btrfs";
     options = [ 
       "subvol=@" 
-      "noatime"       # Eliminates metadata write overhead whenever files are read
-      "nodiratime"    # Applies the same read optimization to system directories
-      "discard=async" # Uses asynchronous background block trims for NVMe lifespans
-      "space_cache=v2"# Uses the high-velocity free space tracking tracking index
+      "noatime"                     # Eliminates metadata write overhead whenever files are read
+      "nodiratime"                  # Applies the same read optimization to system directories
+      "discard=async"               # Uses asynchronous background block trims for NVMe lifespans
+      "space_cache=v2"              # Uses the high-velocity free space tracking tracking index
+      "compress=zstd:1"             # Fast, low-overhead compression
     ];
   };
 
