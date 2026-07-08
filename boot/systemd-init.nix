@@ -14,8 +14,8 @@
     bypassWorkqueues = true; # Direct crypto execution, bypassing CPU workqueue lag
   };
 
-  # Use the XanMod kernel for tier-one desktop responsiveness and scheduling
-  boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  # Recommended for maximum stability on production workstations
+  boot.kernelPackages = pkgs.linuxPackages_LTS;
 
   # Instantly boots the default generation without showing the menu
   boot.loader.timeout = 0;
