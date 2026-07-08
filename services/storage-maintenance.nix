@@ -1,4 +1,4 @@
-# ~/nix-btw/services/system-maintenance.nix
+# ~/nix-btw/services/storage-maintenance.nix
 { config, lib, pkgs, ... }:
 
 {
