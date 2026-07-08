@@ -24,9 +24,6 @@
 
   # Initrd & systemd streamlining (minimalism)
   boot.initrd.systemd.enable = true;
-  
-  # Strips non-essential rescue tools and symbols from the initrd binary size
-  boot.initrd.systemd.strip = true;
 
   # Prevent asynchronous service checks from blocking your desktop login target
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -70,7 +67,7 @@
 
   # High-performance runtime storage (Btrfs tuning)
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/YOUR-BTRFS-ROOT-UUID-HERE"; # Replace with blkid output
+    # The absolute device path is safely managed by hardware-configuration.nix
     fsType = "btrfs";
     options = [ 
       "subvol=@" 
