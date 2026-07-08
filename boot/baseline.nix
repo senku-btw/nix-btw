@@ -8,20 +8,19 @@
   # Use the XanMod kernel
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
-  # Plymouth graphical boot splash
-  boot.plymouth.enable = true;
+  # REMOVED: boot.plymouth.enable = true (Keeps the system minimal)
 
-  # Use systemd in the initrd for seamless Plymouth + LUKS integration
+  # Use systemd in the initrd for robust, modern LUKS terminal handling
   boot.initrd.systemd.enable = true;
 
-  # Silence boot output as much as possible
+  # Silence boot output completely
   boot.consoleLogLevel = 0;
-  boot.initrd.verbose = false; # Fix 1: Completely silences NixOS stage-1 script echo loops
+  boot.initrd.verbose = false; 
 
   boot.kernelParams = [
-    # General
+    # General (Mutes standard text output channels)
     "quiet"
-    "splash"
+    "nomodeset"                   # Optional: Prevents early frame-buffer shifts that flash text cached by firmware
 
     # Kernel logging
     "loglevel=0"
@@ -30,15 +29,15 @@
     # Hide systemd status messages
     "systemd.show_status=false"
     "rd.systemd.show_status=false"
-    "systemd.log_level=err" # Fix 2: Changed from notice to err to catch hidden systemd unit fault dumps
+    "systemd.log_level=err" 
 
     # Reduce udev logging
-    "udev.log_level=0" # Fix 3: Lowered to 0 so early hardware discovery won't dump alerts
+    "udev.log_level=0" 
     "rd.udev.log_level=0"
 
-    # Suppress ACPI interpreter errors where possible
+    # Suppress ACPI interpreter errors completely
     "acpi.log_errors=0"
-    "vt.global_cursor_default=0" # Fix 4: Ensures no blinking cursor cuts through the Plymouth splash screen
+    "vt.global_cursor_default=0" # Keeps the blinking cursor from flashing on the black screen
   ];
 
   # LUKS encrypted root
