@@ -9,12 +9,14 @@
   # Set the kernel to Xanmod for optimal desktop performance
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
-  # Standard kernel parameter optimizations and warning suppression
+  # Production-grade kernel parameter optimizations and firmware error suppression
   boot.kernelParams = [ 
     "quiet" 
     "splash" 
-    "loglevel=3"      # Suppresses non-critical kernel warnings/errors during boot
-    "udev.log_level=3" # Suppresses hardware/driver initialization warnings
+    "loglevel=3"        # Suppresses non-critical kernel warnings/errors during boot
+    "udev.log_level=3"   # Suppresses hardware/driver initialization warnings
+    "acpi.log_errors=0"  # Disables logging of ACPI interpreter errors (like AE_AML_UNINITIALIZED_ELEMENT)
+    "vt.global_cursor_default=0" # Prevents a blinking cursor from breaking the splash screen aesthetic
   ];
 
   # LUKS encrypted volume configuration
