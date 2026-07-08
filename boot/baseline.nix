@@ -63,12 +63,4 @@
       "compress=zstd:1"             # Fast, low-overhead compression
     ];
   };
-
-  # Automated housekeeping (keeps boot menu ultra-lightweight)
-  nix.settings.auto-optimise-store = true;
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d"; # Keeps boot selections clean and fast to parse
-  };
 }
