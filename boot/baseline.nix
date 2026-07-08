@@ -1,4 +1,4 @@
-# ~/nix-btw/boot/baseline.nix
+# ~/nix-btw/boot/boot.nix
 { config, lib, pkgs, ... }:
 
 {
@@ -51,7 +51,6 @@
   ];
 
   # High-performance runtime storage (Btrfs tuning)
-  # The absolute device path is safely managed by hardware-configuration.nix
   fileSystems."/" = {
     fsType = "btrfs";
     options = [ 
@@ -59,7 +58,7 @@
       "noatime"                     # Eliminates metadata write overhead whenever files are read
       "nodiratime"                  # Applies the same read optimization to system directories
       "discard=async"               # Uses asynchronous background block trims for NVMe lifespans
-      "space_cache=v2"              # Uses the high-velocity free space tracking tracking index
+      "space_cache=v2"              # Uses the high-velocity free space tracking index
       "compress=zstd:1"             # Fast, low-overhead compression
     ];
   };
