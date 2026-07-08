@@ -1,34 +1,29 @@
-# ~/nix-btw/users/senku/profile.nix
+# ~/nix-btw/users/admin/profile.nix
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.profiles.senku;
+  cfg = config.profiles.admin;
 in
 {
-  # Module composition -> Empty this or remove it entirely!
-  imports = [ 
-    # REMOVED ./home-manager.nix from here
-  ];
-
   # Module option declarations
-  options.profiles.senku = {
+  options.profiles.admin = {
     enable = lib.mkOption {
       type = lib.types.bool;
-      default = false; # Note: Make sure you set profiles.senku.enable = true; in configuration.nix!
+      default = false; # Note: Make sure you set profiles.admin.enable = true; in configuration.nix!
     };
   };
 
   # Target configuration implementation
   config = lib.mkIf cfg.enable {
     # Home Manager integration hooks (This is the ONLY place this should be imported)
-    home-manager.users.senku = {
+    home-manager.users.admin = {
       imports = [ ./home-manager.nix ];
     };
 
     # System user account definitions
-    users.users.senku = {
+    users.users.admin = {
       isNormalUser = true;
-      description = "Senku Ishigami";
+      hashedPasswordFile = "/var/lib/secrets/admin-password";
       extraGroups = [ 
         "wheel" 
         "networkmanager" 
