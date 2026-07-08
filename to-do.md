@@ -1,7 +1,9 @@
+### boot
+
+- [x] Optimise boot process (disable warnings, speed up etc.)
 
 
 - [ ] Force default audio-source for all apps, to be pro-audio 7
-- [ ] Disable warnings when system boots-up
 - [ ] Fix bemenu app launcher (more space + launch apps)
 - [ ] Disable/hide NixOS Manual
 - [ ] Disable/hide System Manual
