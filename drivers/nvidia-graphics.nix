@@ -2,6 +2,9 @@
 { config, pkgs, lib, ... }:
 
 {
+  # Permit proprietary binaries (Mandatory for proprietary Nvidia drivers)
+  nixpkgs.config.allowUnfree = true;
+
   boot = {
     # Core kernel parameters for Nvidia Wayland stability and explicit sync
     kernelParams = [
