@@ -14,11 +14,11 @@
     bypassWorkqueues = true;  # Direct crypto execution, bypassing CPU workqueue lag
   };
 
-  # Instantly boots the default generation without showing the menu (Hold Space/Shift to force it)
-  boot.loader.timeout = 0;
-
   # Use the XanMod kernel for tier-one desktop responsiveness and scheduling
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
+
+  # Instantly boots the default generation without showing the menu (Hold Space/Shift to force it)
+  boot.loader.timeout = 0;
 
   # Initrd & systemd streamlining (minimalism)
   boot.initrd.systemd.enable = true;
