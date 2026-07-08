@@ -1,4 +1,4 @@
-# ~/nix-btw/boot/systemd-init.nix
+# ~/nix-btw/boot/systemd.nix
 { config, lib, pkgs, ... }:
 
 {
