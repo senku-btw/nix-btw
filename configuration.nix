@@ -5,7 +5,7 @@
   imports = [ 
     # Core system boot and hardware mapping
     ./boot/hardware-configuration.nix
-    ./boot/baseline.nix
+    ./boot/systemd-init.nix
     ./boot/networking.nix
 
     # Hardware drivers
