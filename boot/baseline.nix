@@ -6,7 +6,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
-  # LUKS Encrypted Container
+  # LUKS encrypted root
   boot.initrd.luks.devices."enc-pv" = {
     device = "/dev/nvme0n1p2";
     preLVM = true;
@@ -22,7 +22,9 @@
 
   # Use systemd in the initrd 
   boot.initrd.systemd.enable = true;
-  boot.initrd.compression = "lz4";
+  
+  # CORRECTED: The actual NixOS option for modifying the ramdisk compression tool
+  boot.initrd.compressor = "lz4";
 
   # Silence NixOS internal stage-1/stage-2 text wrappers completely
   boot.consoleLogLevel = 0;
