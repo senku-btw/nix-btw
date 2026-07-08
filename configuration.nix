@@ -36,9 +36,6 @@
     };
   };
 
-  # Permit proprietary binaries (Mandatory for proprietary Nvidia drivers)
-  nixpkgs.config.allowUnfree = true;
-
   # Set system-wide language environment
   i18n.defaultLocale = "en_US.UTF-8";
 
