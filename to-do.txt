@@ -1,3 +1,5 @@
+
+
 - [ ] Force default audio-source for all apps, to be pro-audio 7
 - [ ] Disable warnings when system boots-up
 - [ ] Fix bemenu app launcher (more space + launch apps)
@@ -6,7 +8,6 @@
 - [ ] Chrome shows up as "Web Browser"
 - [x] Create desktop-applications.nix inside packages to put google-chrome and obsidian in
 - [ ] Calling enviroment variables deprecated Niri
-- [ ] Installing Zen Linux Kernel
 
 ## Phase 2 Setting up the Environment
 
@@ -33,7 +34,6 @@
 ### Document/PDF viewer
 
 ### Video Player
-
 
 - [ ] Install https://nvchad.com/ NvChad 
 - [ ] Install https://minbrowser.org/ 
