@@ -1,8 +1,8 @@
-# ~/nix-btw/users/senku/home-manager.nix
+# ~/nix-btw/users/admin/home-manager.nix
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.profiles.senku;
+  cfg = config.profiles.admin;
 in
 {
   # External module composition
@@ -12,10 +12,10 @@ in
   ];
 
   # Module option declarations (Kept at the top level)
-  options.profiles.senku = {
+  options.profiles.admin = {
     username = lib.mkOption {
       type = lib.types.str;
-      default = "senku";
+      default = "admin";
     };
     dotfilesDir = lib.mkOption {
       type = lib.types.str;
