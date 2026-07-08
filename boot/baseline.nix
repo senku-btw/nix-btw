@@ -23,9 +23,6 @@
   # Use systemd in the initrd 
   boot.initrd.systemd.enable = true;
   
-  # CORRECTED: The actual NixOS option for modifying the ramdisk compression tool
-  boot.initrd.compressor = "lz4";
-
   # Silence NixOS internal stage-1/stage-2 text wrappers completely
   boot.consoleLogLevel = 0;
   boot.initrd.verbose = false; 
