@@ -1,4 +1,4 @@
-# ~/nix-btw/boot/boot.nix
+# ~/nix-btw/boot/sys-init.nix
 { config, lib, pkgs, ... }:
 
 {
