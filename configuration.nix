@@ -30,19 +30,9 @@
       # Enable modern Nix capabilities
       experimental-features = [ "nix-command" "flakes" ];
       
-      # Deduplicate the store automatically to save disk space
-      auto-optimise-store = true;
-      
       # Prevent accidental deletion of build dependencies during GC
       keep-outputs = true;
       keep-derivations = true;
-    };
-
-    # Automate storage maintenance & generation pruning
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
     };
   };
 
