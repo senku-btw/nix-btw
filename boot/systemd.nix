@@ -40,11 +40,27 @@
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.services.systemd-udev-settle.enable = false;
 
-  # Mask heavy or irrelevant early hardware debugging tasks
+  # Mask heavy, blocking, or irrelevant early hardware debugging/tracking tasks
   systemd.maskedServices = [
     "sys-kernel-debug.mount"
-    # "dev-hugepages.mount" # Unmasked: Enterprise apps (Docker, VMs, Databases) often require hugepages.
+    "sys-kernel-config.mount"                # Disables configfs (unnecessary for standard workstations)
+    "pstore.mount"                           # Disables persistent storage mounts for kernel dumps
+    "systemd-pstore.service"                 # Stops systemd from processing historic crash logs on boot
+    "systemd-boot-check-no-failures.service" # Bypasses sync barrier waiting for 100% clean unit states
   ];
+
+  # Global Systemd Timeout Optimizations (Eliminates the 90-second shutdown hang)
+  systemd.extraConfig = ''
+    DefaultTimeoutStartSec=10s
+    DefaultTimeoutStopSec=10s
+  '';
+
+  # Prevent Journald from performing massive historic index disk-reads during early boot
+  services.journald.extraConfig = ''
+    SystemMaxUse=100M
+    SystemMaxFileSize=20M
+    Storage=persistent
+  '';
 
   # Enterprise error monitoring with dead-silent boot presentation
   boot.consoleLogLevel = 3; # Level 3 (Errors) prevents a broken machine from hiding its failure
@@ -63,6 +79,7 @@
     "acpi.log_errors=0"                     
     "vt.global_cursor_default=0"            
     "fbcon=nodefer"                         
+
     # --- Hardware & Boot Performance ---
     "fastboot"                              
     "libahci.ignore_sss=1"                  
