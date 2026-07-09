@@ -7,12 +7,12 @@
   boot.loader.systemd-boot.editor = false;
   boot.loader.efi.canTouchEfiVariables = true;
  
-  # LUKS Encrypted Container initialization
+  # LUKS Encrypted Container Initialization
   boot.initrd.luks.devices."enc-pv" = {
     device = "/dev/nvme0n1p2";
     preLVM = true;
-    allowDiscards = true;
-    bypassWorkqueues = true; # Direct crypto execution, bypassing CPU workqueue lag
+    allowDiscards = true;     # Compulsory for long-term NVMe life and speed
+    bypassWorkqueues = true;  # Bypasses CPU workqueue lag for direct NVMe crypto execution
   };
 
   # Recommended for maximum stability on production workstations
@@ -23,7 +23,8 @@
 
   # Initrd & systemd streamlining (Extreme minimalism)
   boot.initrd.systemd.enable = true;
-  boot.initrd.compressor = "zstd -1"; 
+  boot.initrd.compressor = "zstd"; 
+  boot.initrd.compressorArgs = [ "-1" ]; # Correct NixOS syntax for passing compression levels
   
   # Strip unneeded kernel modules to radically shrink initrd size
   boot.initrd.includeDefaultModules = false;
@@ -42,63 +43,43 @@
   # Mask heavy or irrelevant early hardware debugging tasks
   systemd.maskedServices = [
     "sys-kernel-debug.mount"
-    "dev-hugepages.mount"
+    # "dev-hugepages.mount" # Unmasked: Enterprise apps (Docker, VMs, Databases) often require hugepages.
   ];
 
-  # Absolute error suppression & total black screen silence
-  boot.consoleLogLevel = 0;
+  # Enterprise error monitoring with dead-silent boot presentation
+  boot.consoleLogLevel = 3; # Level 3 (Errors) prevents a broken machine from hiding its failure
   boot.initrd.verbose = false; 
 
   boot.kernelParams = [
-    "quiet"                                 # Suppress standard boot messages
-    "loglevel=0"                            # Log only critical kernel emergencies
-    "printk.devkmsg=off"                    # Disable early console dmesg logging
-    "systemd.show_status=auto"              # Hide systemd service status dumps
-    "rd.systemd.show_status=auto"          # Hide status dumps in initial RAMdisk
-    "systemd.log_level=err"                 # Restrict systemd logging to errors
-    "udev.log_level=0"                      # Disable hardware discovery logging
-    "rd.udev.log_level=0"                   # Disable initrd hardware discovery logs
-    "acpi.log_errors=0"                     # Mask non-fatal motherboard ACPI errors
-    "vt.global_cursor_default=0"            # Disable blinking console cursor
-    "fastboot"                              # Skip storage topology self-tests
-    "libahci.ignore_sss=1"                  # Disable staggered SATA spin-up delays
-    "lp=0"                                  # Skip legacy parallel port probing
-    "io_delay=none"                         # Disable legacy x86 ISA timing delays
-    "noatime"                               # Redundant mount flag, safe to ignore
-    "fbcon=nodefer"                         # Defer framebuffer for clean LUKS prompt
-    "cryptomgr.notests"                     # Skip crypto self-tests during boot
-    "nvme_core.default_ps_max_latency_us=0" # Force max-performance NVMe state
-    "mce=off"                               # Suppress Machine Check Exception errors
-    "warn_alloc=off"                        # Suppress page allocation warnings
-    "video=efifb:off"                       # Kill early EFI text framebuffers entirely
+    # --- Silent Boot Presentation ---
+    "quiet"                                 
+    "loglevel=3"                            # Suppress fluff, but expose hardware crises
+    "printk.devkmsg=off"                    
+    "systemd.show_status=auto"              
+    "rd.systemd.show_status=auto"          
+    "systemd.log_level=err"                 
+    "udev.log_level=3"                      # Log errors only; 0 makes USB/Dock debugging impossible
+    "rd.udev.log_level=3"                    
+    "acpi.log_errors=0"                     
+    "vt.global_cursor_default=0"            
+    "fbcon=nodefer"                         
+    # --- Hardware & Boot Performance ---
+    "fastboot"                              
+    "libahci.ignore_sss=1"                  
+    "lp=0"                                  
+    "io_delay=none"                         
+    "nvme_core.default_ps_max_latency_us=0" # Max-performance NVMe state (No power-state stutters)
   ];
-
-  boot.kernelParams = [
-  "quiet"
-  "loglevel=3"
-  "printk.devkmsg=off"
-  "systemd.show_status=auto"
-  "rd.systemd.show_status=auto"
-  "systemd.log_level=err"
-  "vt.global_cursor_default=0"
-  "nvme_core.default_ps_max_latency_us=0"
-  "libahci.ignore_sss=1"
-  "fastboot"
-  "io_delay=none"
-  "cryptomgr.notests"
-  "fbcon=nodefer"
-  "acpi.log_errors=0"
- ];
 
   # High-performance runtime storage (Aggressive Btrfs tuning)
   fileSystems."/" = {
     fsType = "btrfs";
     options = [ 
       "subvol=@" 
-      "noatime"           # Disable access time updates
-      "discard=async"     # Asynchronous background SSD TRIM
-      "space_cache=v2"    # Fast free space tracking
-      "compress=zstd:1"   # Ultra-fast, low-overhead compression
+      "noatime"           # Disables file access time updates completely
+      "discard=async"     # Continuous background SSD TRIM (maintains NVMe write speeds)
+      "space_cache=v2"    
+      "compress=zstd:1"   # Ultra-fast, low-overhead transparent compression
     ];
   };
 }
