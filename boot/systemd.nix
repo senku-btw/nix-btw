@@ -63,19 +63,19 @@
   systemd.services.systemd-udev-settle.enable = false;
 
   # --- Masked Systemd Units ---
-  systemd.maskedServices = [
+  systemd.units = {
     # Disables mounting the kernel debugging filesystem (unnecessary for production workstation usage)
-    "sys-kernel-debug.mount"
+    "sys-kernel-debug.mount".mask = true;
 
     # Disables runtime kernel configuration infrastructure mounts to minimize surface area
-    "sys-kernel-config.mount"
+    "sys-kernel-config.mount".mask = true;
 
     # Prevents mounting the platform persistent storage space used for legacy panic saves
-    "pstore.mount"
+    "pstore.mount".mask = true;
 
     # Stops the automated systemd processing of historical crash records during the early init sequence
-    "systemd-pstore.service"
-  ];
+    "systemd-pstore.service".mask = true;
+  };
 
   # --- Global Systemd Timeouts ---
   systemd.extraConfig = ''
@@ -108,52 +108,52 @@
   # --- Advanced Kernel Parameters ---
   boot.kernelParams = [
     # Suppresses standard kernel informational text during early bootstrap
-    "quiet"                                 
+    "quiet"                                   
 
     # Filters framework logging to severity level 3 (Errors) to conceal non-critical system notifications
-    "loglevel=3"                            
+    "loglevel=3"                              
 
     # Prevents runtime kernel printk messages from flooding the /dev/kmsg stream early on
-    "printk.devkmsg=off"                    
+    "printk.devkmsg=off"                      
 
     # Configures systemd to output unit status changes dynamically or only on specific structural events
-    "systemd.show_status=auto"              
+    "systemd.show_status=auto"                
 
     # Mirrors the conditional status behavior inside the initrd layer
-    "rd.systemd.show_status=auto"          
+    "rd.systemd.show_status=auto"            
 
     # Forces systemd core logic to suppress warning strings and output strict errors only
-    "systemd.log_level=err"                 
+    "systemd.log_level=err"                   
 
     # Instructs udev infrastructure to hide verbose device discovery logs while preserving error paths
-    "udev.log_level=3"                      
+    "udev.log_level=3"                        
 
     # Extends error-only logging profiles to the initial ramdisk hardware detection loop
-    "rd.udev.log_level=3"                    
+    "rd.udev.log_level=3"                     
 
     # Suppresses continuous firmware/ACPI compatibility warnings that do not impact hardware stability
-    "acpi.log_errors=0"                     
+    "acpi.log_errors=0"                       
 
     # Disables the flashing text console cursor during early modesetting to ensure a clean visual transition
-    "vt.global_cursor_default=0"            
+    "vt.global_cursor_default=0"              
 
     # Instructs the frame-buffer subsystem to skip legacy driver deferral steps for instant display handoff
-    "fbcon=nodefer"                         
+    "fbcon=nodefer"                           
 
     # Commands the kernel to skip non-essential safety checks on storage architectures during discovery
-    "fastboot"                              
+    "fastboot"                                
 
     # Instructs SATA controllers to ignore staggered spin-up delays (helps avoid artificial hardware alignment pauses)
-    "libahci.ignore_sss=1"                  
+    "libahci.ignore_sss=1"                    
 
     # Disables legacy parallel port polling logic
-    "lp=0"                                  
+    "lp=0"                                    
 
     # Erases legacy I/O delays on port 0x80 execution steps to shave milliseconds off CPU cycle waits
-    "io_delay=none"                         
+    "io_delay=none"                           
 
     # Locks NVMe storage lanes out of lower energy saving deep sleep levels to completely eradicate power-state transition stutters
-    "nvme_core.default_ps_max_latency_us=0" 
+    "nvme_core.default_ps_max_latency_us=0"  
   ];
 
   # --- Runtime Storage Tuning ---
