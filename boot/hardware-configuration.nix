@@ -8,18 +8,51 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/6c0c40dc-5757-44ea-bf8b-84ffdfd79387";
-      fsType = "ext4";
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@root" ];
+    };
+
+  boot.initrd.luks.devices."enc-pv".device = "/dev/disk/by-uuid/a4232927-3a94-4f36-aad6-caca4af1bada";
+
+  fileSystems."/home" =
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@home" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@nix" ];
+    };
+
+  fileSystems."/var/log" =
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@log" ];
+    };
+
+  fileSystems."/.snapshots" =
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@snapshots" ];
+    };
+
+  fileSystems."/var/lib" =
+    { device = "/dev/mapper/enc-pv";
+      fsType = "btrfs";
+      options = [ "subvol=@var_lib" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4790-EB83";
+    { device = "/dev/disk/by-uuid/90B5-E098";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
