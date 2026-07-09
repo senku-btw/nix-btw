@@ -1,3 +1,4 @@
+# /etc/nixos/boot/initrd.nix
 { config, lib, pkgs, ... }:
 
 {
@@ -5,6 +6,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;
   boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Forces the UEFI framebuffer to utilize your monitor's native max resolution 
+  # right at the boot menu, ensuring a pixel-perfect handoff to the LUKS screen.
+  boot.loader.systemd-boot.consoleMode = "max";
   
   # Reduced to 1 second for fast handoff (Spam arrow keys to catch it if needed)
   boot.loader.timeout = 1; 
@@ -23,9 +28,11 @@
   boot.initrd.systemd.enable = true;
   boot.initrd.compressor = "zstd";
   boot.initrd.compressorArgs = [ "-1" ];
+  
+  # RESTORED: Must be true so NixOS includes base input, bus, and HID drivers for your keyboard
   boot.initrd.includeDefaultModules = true; 
 
-  # FIX: Pull in hardware-accelerated crypto modules to unlock the NVMe immediately
+  # Pull in hardware-accelerated crypto modules to unlock the NVMe immediately
   boot.initrd.kernelModules = [ "aesni_intel" "cryptd" ];
 
   boot.initrd.availableKernelModules = [
@@ -68,10 +75,8 @@
     "fastboot"
     "lp=0"
     "noresume"
-    "nvidia-drm.modeset=1" 
-    
-    # FIX: Skip console setup overhead during early boot stage
     "vconsole.setup=0"
+    "vt.global_cursor_default=0" # Hides the flashing text cursor that triggers display refreshes
   ];
 
   # --- High-Performance Runtime Storage ---
@@ -79,9 +84,9 @@
     fsType = "btrfs";
     options = [ 
       "subvol=@root"     
-      "noatime"         
+      "noatime"          
       "discard=async"   
-      "compress=zstd:1" 
+      "compress=zstd:1"  
     ];
   };  
 }
