@@ -6,13 +6,15 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${lib.getExe pkgs.tuigreet} --time --asterisks --remember --remember-session --sessions /run/current-system/sw/share/wayland-sessions";
+        # OPTIMIZATION: Added the --remember and --remember-session flags 
+        # alongside an explicit fallback command if no session history exists yet.
+        command = "${lib.getExe pkgs.tuigreet} --time --asterisks --remember --remember-session --sessions /run/current-system/sw/share/wayland-sessions --cmd mangowm-session";
         user = "greeter";
       };
     };
   };
 
-  # Production-Grade Lifecycle Configuration (Relying on safe NixOS Defaults)
+  # Production-Grade Lifecycle Configuration
   systemd.services.greetd.serviceConfig = {
     # Keep the default "idle" type to guarantee the graphics pipeline is fully up before running
     Type = lib.mkForce "idle";
