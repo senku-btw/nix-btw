@@ -4,9 +4,9 @@
   A pristine, production-grade, meticulously optimised ecosystem powered by Nix Flakes; managed via Home-Manager.
   <br><br>
   <img src="https://img.shields.io/badge/NixOS-24.11-5277C3?logo=nixos&logoColor=white&labelColor=23272e&style=for-the-badge" alt="NixOS Version" />
-  <img src="https://img.shields.io/badge/Kernel-Linux--Zen-A3BE8C?logo=linux&logoColor=white&labelColor=23272e&style=for-the-badge" alt="Kernel" />
-  <img src="https://img.shields.io/badge/WM%20%2F%20DE-Niri-B48EAD?logo=linux-containers&logoColor=white&labelColor=23272e&style=for-the-badge" alt="WM/DE" />
-  <img src="https://img.shields.io/github/license/senku-btw/nix-btw?style=for-the-badge&logo=open-source-initiative&logoColor=white&color=EBCB8B&labelColor=23272e" alt="License" />
+  <img src="https://img.shields.io/badge/Kernel-Linux--LTS-A3BE8C?logo=linux&logoColor=white&labelColor=23272e&style=for-the-badge" alt="Kernel" />
+  <img src="https://img.shields.io/badge/WM%20%2F%20DE-MangoWM-B48EAD?logo=linux-containers&logoColor=white&labelColor=23272e&style=for-the-badge" alt="WM/DE" />
+  <img src="https://img.shields.io/badge/License-MIT-EBCB8B?logo=open-source-initiative&logoColor=white&labelColor=23272e&style=for-the-badge" alt="License" />
 </p>
 
 ---
