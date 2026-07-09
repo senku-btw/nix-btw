@@ -18,7 +18,7 @@
     ./services/ssh.nix
 
     # Desktop sessions & user packages
-    ./sessions/niri.nix
+    ./sessions/mangowm.nix
     ./packages/system-packages.nix
 
     # User identity profiles & Home Manager hooks
