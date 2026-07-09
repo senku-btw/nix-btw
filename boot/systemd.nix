@@ -5,7 +5,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 3; 
+  
+  # Reduced to 1 second for fast handoff (Spam arrow keys to catch it if needed)
+  boot.loader.timeout = 1; 
 
   # --- LUKS Encrypted Container Initialization ---
   boot.initrd.luks.devices."enc-pv" = {
@@ -14,14 +16,17 @@
     bypassWorkqueues = true;   
   };
 
-  # Use latest stable kernel for modern CPU scheduler enhancements
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # LTS Kernel for absolute stability
+  boot.kernelPackages = pkgs.linuxPackages;
   
   # --- Initrd & Systemd Streamlining ---
   boot.initrd.systemd.enable = true;
   boot.initrd.compressor = "zstd";
   boot.initrd.compressorArgs = [ "-1" ];
-  boot.initrd.includeDefaultModules = true;
+  boot.initrd.includeDefaultModules = true; 
+
+  # FIX: Pull in hardware-accelerated crypto modules to unlock the NVMe immediately
+  boot.initrd.kernelModules = [ "aesni_intel" "cryptd" ];
 
   boot.initrd.availableKernelModules = [
     "nvme"          
@@ -63,10 +68,13 @@
     "fastboot"
     "lp=0"
     "noresume"
-    "nvidia-drm.modeset=1"
+    "nvidia-drm.modeset=1" 
+    
+    # FIX: Skip console setup overhead during early boot stage
+    "vconsole.setup=0"
   ];
 
-  # --- High-Performance Runtime Storage (Btrfs tuning) ---
+  # --- High-Performance Runtime Storage ---
   fileSystems."/" = {
     fsType = "btrfs";
     options = [ 
