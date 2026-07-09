@@ -22,7 +22,7 @@
     ./packages/system-packages.nix
 
     # User identity profiles & Home Manager hooks
-    ./users/senku/profile.nix
+    ./users/admin/profile.nix
   ];
 
   nix = {
