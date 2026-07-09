@@ -29,7 +29,6 @@
   boot.initrd.compressor = "zstd";
   boot.initrd.compressorArgs = [ "-1" ];
   
-  # RESTORED: Must be true so NixOS includes base input, bus, and HID drivers for your keyboard
   boot.initrd.includeDefaultModules = true; 
 
   # Pull in hardware-accelerated crypto modules to unlock the NVMe immediately
